@@ -18,14 +18,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Sirf ek baar model aur columns load karein (Super Fast)
 @st.cache_resource
 def load_engine():
     with open('src/model.pkl', 'rb') as f:
         model = pickle.load(f)
     with open('src/columns.pkl', 'rb') as f:
         columns = pickle.load(f)
-    # Basic data sirf dropdowns ke liye chahiye
+
     df_basic = pd.read_csv('data/processed/zameen_data_cleaned.csv', usecols=['city', 'location', 'bedrooms', 'baths'])
     return model, columns, df_basic
 
@@ -47,10 +46,7 @@ st.write("")
 
 if st.button("Predict Property Value", type="primary", use_container_width=True):
     
-    # 1. Khali (0s) vector banayen expected columns ke size ka
-    input_data = np.zeros(len(expected_columns))
-    
-    # 2. PRO-FIX: Naam se column dhoondh kar value assign karein (No assumptions!)
+    input_data = np.zeros(len(expected_columns))    
     if 'size' in expected_columns:
         input_data[expected_columns.index('size')] = size
     if 'bedrooms' in expected_columns:
@@ -58,7 +54,6 @@ if st.button("Predict Property Value", type="primary", use_container_width=True)
     if 'baths' in expected_columns:
         input_data[expected_columns.index('baths')] = baths
     
-    # 3. Jo City/Location user ne chuni hai, us column ko 1 kar dein
     city_col = 'city_' + selected_city
     location_col = 'location_' + selected_location
     
@@ -70,7 +65,6 @@ if st.button("Predict Property Value", type="primary", use_container_width=True)
         index = expected_columns.index(location_col)
         input_data[index] = 1
         
-    # 4. Millisecond Prediction
     prediction = model.predict([input_data])[0]
     
     st.divider()
