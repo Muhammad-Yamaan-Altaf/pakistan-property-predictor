@@ -6,12 +6,10 @@ files = ['src/ingest.py', 'src/clean.py', 'src/train.py', 'src/app.py']
 # 1. Creating folders
 for folder in folders:
     os.makedirs(folder, exist_ok=True)
-    print(f"Folder create ho gaya: {folder}")
+    print(f"Folders created: {folder}")
 
 # 2. Creating empty files
 for file in files:
     with open(file, 'w') as f:
         pass 
-    print(f"File create ho gayi: {file}")
-
-print("Zabardast! Aapka project structure bilkul tayar hai.")
+    print(f"Files created: {file}")
